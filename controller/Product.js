@@ -11,8 +11,13 @@ exports.createProduct = async (req, res) => {
 };
 
 exports.ferchAllProducts = async (req, res) => {
-  let query = Product.find({});
-  let totalProductsQuery = Product.find({});
+let condition = {};
+   if(!req.query.admin) {
+    condition.deleted={$ne:true};
+   }
+   
+  let query = Product.find(condition); //do not return deleted product
+  let totalProductsQuery = Product.find(condition);
 
   if (req.query.category) {
     query = query.where({ category: req.query.category });
